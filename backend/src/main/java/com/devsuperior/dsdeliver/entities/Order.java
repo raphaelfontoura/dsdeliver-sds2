@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -30,10 +30,7 @@ public class Order implements Serializable {
     private OrderStatus status;
 
     @ManyToMany
-    @JoinTable(name = "tb_order_product", 
-        joinColumns = @JoinColumn(name = "order_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
+    @JoinTable(name = "tb_order_product", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products = new HashSet<>();
 
     public Order() {
@@ -96,6 +93,14 @@ public class Order implements Serializable {
         this.status = status;
     }
 
+    public Double getTotal() {
+        double sum = 0;
+        for (Product product : products) {
+            sum += product.getPrice();
+        }
+        return sum;
+    }
+
     public Set<Product> getProducts() {
         return products;
     }
@@ -124,5 +129,5 @@ public class Order implements Serializable {
             return false;
         return true;
     }
-    
+
 }
